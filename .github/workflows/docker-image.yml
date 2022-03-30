@@ -37,7 +37,7 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
           image: chaosmaker/github-flow-test
-          tags: ${{ github.run_number }}
+          tags: github-flow-test
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
