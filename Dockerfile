@@ -8,5 +8,5 @@ USER yassir
 VOLUME /tmp
 
 EXPOSE 7000
-ADD /target/*.jar app.jar
+ADD *.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
