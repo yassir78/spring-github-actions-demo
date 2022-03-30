@@ -21,21 +21,23 @@ jobs:
         run: mvn test
       - name: Build Project 
         run: mvn package
+      #Set up Maven cache
+      - name: Cache Maven packages
+        #This action allows caching dependencies and build outputs to improve workflow execution time.
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       -
-        name: Login to DockerHub
-        uses: docker/login-action@v1 
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: listing file 
-        run: ls target
-      -
         name: Build and push
-        uses: docker/build-push-action@v2
+        uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          push: true
-          tags: chaosmaker/github-flow-test:${{ github.run_number }}
-          
+          image: chaosmaker/github-flow-test
+          tags: ${{ github.run_number }}
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
