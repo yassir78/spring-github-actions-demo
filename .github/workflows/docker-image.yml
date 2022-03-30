@@ -70,6 +70,8 @@ jobs:
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
     steps:
+    #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v1
       - name: Download JAR
         #Download the artifact which was uploaded in the build's job
         uses: actions/download-artifact@v2
