@@ -60,10 +60,7 @@ jobs:
           #Set artifact name
           name: artifact
           #From this path
-          path: target/data-0.0.1-SNAPSHOT.jar
-
-
-
+          path: target/*-SNAPSHOT.jar
 
 
   sonar:
@@ -78,8 +75,22 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '11'
-      - name: list directories
-        run: ls
+      - name: Quality Scan (Sonar)
+        uses: sonarsource/sonarqube-scan-action@master
+        with:
+        projectBaseDir: /src
+        env:
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      
+      - name: SonarQube Quality Gate check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        # Force to fail step after specific time
+        with:
+         scanMetadataReportFile: target/sonar/report-task.txt
+        timeout-minutes: 5
+        env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
   deploy:
