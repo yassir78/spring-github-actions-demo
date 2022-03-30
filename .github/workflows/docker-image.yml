@@ -60,12 +60,31 @@ jobs:
           #Set artifact name
           name: artifact
           #From this path
-          path: target/*-SNAPSHOT.jar
+          path: target/data-0.0.1-SNAPSHOT.jar
 
-      
+
+
+
+
+  sonar:
+    needs: build
+    name: Sonar cube analysis
+    runs-on: ubuntu-latest
+    steps:
+      #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v1
+      #Set up JDK 11
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - name: list directories
+        run: ls
+
+
   deploy:
     #Depends on sonar's job
-    needs: build
+    needs: sonar
     name: Deploy 
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
