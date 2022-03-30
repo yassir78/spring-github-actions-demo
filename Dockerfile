@@ -5,6 +5,7 @@ RUN addgroup yassir && adduser -S -G yassir yassir
 USER yassir
 
 
-EXPOSE 7000
-ADD /target/*.jar app.jar
+EXPOSE 8080
+COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
+
 ENTRYPOINT ["java","-jar","/app.jar"]
