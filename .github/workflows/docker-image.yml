@@ -49,7 +49,7 @@ jobs:
     - name: list target directory
       run: ls target/
     - name: list target directory 3
-      run: ls 
+      run: ls src/
     
     #- name: Quality Gate check (Sonar)
     #  uses: sonarsource/sonarqube-quality-gate-action@master
