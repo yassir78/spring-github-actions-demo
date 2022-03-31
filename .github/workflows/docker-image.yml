@@ -75,23 +75,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '11'
-      - name: Quality Scan (Sonar)
-        uses: sonarsource/sonarqube-scan-action@master
-        with:
-        projectBaseDir: /src
-        env:
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      
-      - name: SonarQube Quality Gate check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        # Force to fail step after specific time
-        with:
-         scanMetadataReportFile: target/sonar/report-task.txt
-        timeout-minutes: 5
-        env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
 
   deploy:
     #Depends on sonar's job
@@ -108,10 +91,4 @@ jobs:
         with:
           name: artifact 
       - name: Build And Push Docker Image
-        uses: mr-smithers-excellent/docker-build-push@v5
-        with:
-          image: chaosmaker/github-flow-test
-          tags: ${{ github.runner }}
-          registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+        run: ls
