@@ -48,12 +48,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-					<to>
-						<image>docker.io/chaosmaker/github-flow-test</image>
-					</to>
-
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
