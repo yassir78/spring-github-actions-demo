@@ -26,10 +26,23 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
+        
+  sonar:
+    needs: tests
+    name: Sonar cube analysis
+    runs-on: ubuntu-latest
+    steps:
+      #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v1
+      #Set up JDK 11
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
   #Build's job
   build:
     #Depends on sonar's job
-    needs: tests
+    needs: sonar
     name: Build
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest  
@@ -63,22 +76,11 @@ jobs:
           path: target/*-SNAPSHOT.jar
 
 
-  sonar:
-    needs: build
-    name: Sonar cube analysis
-    runs-on: ubuntu-latest
-    steps:
-      #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
-      - uses: actions/checkout@v1
-      #Set up JDK 11
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'
+  
 
   deploy:
     #Depends on sonar's job
-    needs: sonar
+    needs: build
     name: Deploy 
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
