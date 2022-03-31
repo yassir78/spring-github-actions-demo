@@ -1,26 +1,32 @@
     #Set up Maven cache
 name: CI/CD Pipeline
 on:
+
   #Trigger the workflow on push from the main branch 
   push:
     branches:
       - main
 jobs:
   build:
+  
     name: Build and push to docker
+    
     #Run on ubuntu using the latest version
     runs-on: ubuntu-latest
+    
     #Job's steps
     steps:
+    
     #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
     - uses: actions/checkout@v1
+    
     #Set up JDK 11
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
         java-version: '11'
+        
     #Set up Maven cache
-    
     - name: Cache Maven packages
         #This action allows caching dependenciPes and build outputs to improve workflow execution time.
       uses: actions/cache@v1
@@ -31,10 +37,7 @@ jobs:
 
     - name: Build and push image to docker registry
       run: mvn test com.google.cloud.tools:jib-maven-plugin:2.8.0:build -Dimage=docker.io/chaosmaker/github-flow-test -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }} 
-  
-    - name: list target directory1
-      run: ls target/
-    
+      
     - name: Quality Scan (Sonar)
       uses: sonarsource/sonarqube-scan-action@master
       with:
@@ -45,11 +48,6 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-    
-    - name: list target directory
-      run: ls 
-    - name: list target directory 3
-      run: find . -name .sonar/cache
     
     - name: Quality Gate check (Sonar)
       uses: sonarsource/sonarqube-quality-gate-action@master
