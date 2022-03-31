@@ -19,6 +19,7 @@ jobs:
       with:
         java-version: '11'
     #Set up Maven cache
+    
     - name: Cache Maven packages
         #This action allows caching dependencies and build outputs to improve workflow execution time.
       uses: actions/cache@v1
@@ -26,9 +27,12 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
+
     - name: Run tests
       run: mvn test
+
     - name: Build and push image to docker registry
-      run: mvn compile jib:build \
-          -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
-          -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }
+      run: mvn compile com.google.cloud.tools:jib-maven-plugin:2.8.0:build -Dimage=docker.io/chaosmaker/github-flow-test -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }} 
+    
+    - name: list target directory
+      run: ls target/
