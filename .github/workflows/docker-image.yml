@@ -33,4 +33,4 @@ jobs:
     - name: Build and push image to docker registry
       run: mvn compile jib:build \
           -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
-          -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+          -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }} 
