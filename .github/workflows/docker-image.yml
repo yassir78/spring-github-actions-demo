@@ -91,4 +91,10 @@ jobs:
         with:
           name: artifact 
       - name: Build And Push Docker Image
-        run: ls
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: chaosmaker/github-flow-test
+          tags: ${{ github.runner }}
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
