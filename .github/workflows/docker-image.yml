@@ -91,6 +91,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: artifact 
+      - name: Get smart tag
+        id: prepare
+        uses: Surgo/docker-smart-tag-action@v1
+        with:
+          docker_image: chaosmaker/github-flow-test
+      - name: Print tags
+        run: echo ${{ steps.prepare.outputs.tag }}
       - name: Build And Push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
