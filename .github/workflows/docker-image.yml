@@ -31,7 +31,9 @@ jobs:
 
     - name: Build and push image to docker registry
       run: mvn test com.google.cloud.tools:jib-maven-plugin:2.8.0:build -Dimage=docker.io/chaosmaker/github-flow-test -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }} 
-    
+  
+    - name: list target directory1
+      run: ls target/
     
     - name: Quality Scan (Sonar)
       uses: sonarsource/sonarqube-scan-action@master
