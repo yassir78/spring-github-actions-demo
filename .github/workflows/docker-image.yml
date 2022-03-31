@@ -47,7 +47,7 @@ jobs:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
     
     - name: list target directory
-      run: ls target/
+      run: ls 
     - name: list target directory 3
       run: find . -name report-task.txt
     
