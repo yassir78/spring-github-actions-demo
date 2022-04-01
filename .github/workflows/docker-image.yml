@@ -68,11 +68,8 @@ jobs:
         timeout-minutes: 3
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    - name: Generate tags
-      id: docker_tags
-      uses: dnaka91/action-docker-tags@v0.1
-      with:
-        registries: |
-          docker.io
+    - name: Generate image tags
+      id: prepare
+      uses: oaklees/docker-gitops-tag-action@v0.0.2
     - name: Print generated tag
-      run: echo ${{ steps.docker_tags.outputs.tags }}
+      run: echo ${{ steps.prepare.outputs.tag }}
