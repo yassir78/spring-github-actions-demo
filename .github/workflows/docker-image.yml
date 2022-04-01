@@ -37,6 +37,18 @@ jobs:
 
     - name: Build and push image to docker registry
       run: mvn test com.google.cloud.tools:jib-maven-plugin:2.8.0:build  -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }} 
+     
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: 'trivy-results.sarif'
       
     - name: Quality Scan (Sonar)
       uses: sonarsource/sonarqube-scan-action@master
