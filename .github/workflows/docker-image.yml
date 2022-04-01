@@ -48,6 +48,9 @@ jobs:
         image-ref: '${{ env.DOCKERHUB_REPOSITORY }}:latest'
         format: 'sarif'
         output: 'trivy-results.sarif'
+        
+    - name: show the content of trivy result
+      run: cat trivy-results.sarif
 
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v1
