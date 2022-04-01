@@ -6,6 +6,10 @@ on:
   push:
     branches:
       - main
+ 
+env:
+  DOCKERHUB_REPOSITORY: docker.io/chaosmaker/github-flow-test
+  
 jobs:
   build:
   
@@ -41,7 +45,8 @@ jobs:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: 'docker.io/chaosmaker/github-flow-test:latest'
+        image-ref: '$DOCKERHUB_REPOSITORY:latest'
+        
         format: 'sarif'
         output: 'trivy-results.sarif'
 
@@ -68,5 +73,3 @@ jobs:
         timeout-minutes: 3
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    - name: Print generated tag
-      run: echo ${{ github.sha }}
