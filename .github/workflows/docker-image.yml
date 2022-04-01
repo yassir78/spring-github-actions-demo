@@ -68,3 +68,10 @@ jobs:
         timeout-minutes: 3
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: Get smart tag
+      id: prepare
+      uses: Surgo/docker-smart-tag-action@v1
+      with:
+        docker_image: chaosmaker/github-flow-test
+    - name: Print generated tag
+      run: echo ${{ steps.prepare.outputs.tag }}
