@@ -45,8 +45,7 @@ jobs:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: '$DOCKERHUB_REPOSITORY:latest'
-        
+        image-ref: "$DOCKERHUB_REPOSITORY:latest"
         format: 'sarif'
         output: 'trivy-results.sarif'
 
