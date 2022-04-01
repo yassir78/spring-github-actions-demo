@@ -68,8 +68,5 @@ jobs:
         timeout-minutes: 3
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    - name: Generate image tags
-      id: prepare
-      uses: oaklees/docker-gitops-tag-action@v0.0.2
     - name: Print generated tag
-      run: echo ${{ steps.prepare.outputs.tag }}
+      run: echo ${{ github.sha }}
