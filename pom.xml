@@ -56,10 +56,14 @@
                 <configuration>
                     <allowInsecureRegistries>true</allowInsecureRegistries>
                     <from>
-                        <image>registry.access.redhat.com/ubi8/openjdk-17:1.11-2.1647457802</image>
+                        <image>openjdk:17-oracle</image>
                     </from>
                     <to>
                         <image>docker.io/chaosmaker/${project.artifactId}:${project.version}</image>
+                        <auth>
+                            <username>${env.REGISTRY_USERNAME}</username>
+                            <password>${env.REGISTRY_PASSWORD}</password>
+                        </auth>
                     </to>
                 </configuration>
             </plugin>
