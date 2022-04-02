@@ -59,6 +59,8 @@ jobs:
         with:
           scanMetadataReportFile: target/sonar/report-task.txt
           timeout-minutes: 3
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: 📦 Build Docker Images
         run: mvn package jib:build -am -DskipTests
