@@ -53,6 +53,13 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
+      
+      - name: Quality Gate check (Sonar)
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        with:
+          scanMetadataReportFile: src/.scannerwork/report-task.txt
+          timeout-minutes: 3
+
       - name: 📦 Build Docker Images
         run: mvn package jib:build -am -DskipTests
         env:
