@@ -14,7 +14,7 @@
     <name>demo</name>
     <description>Github action demo</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <maven.jib.version>3.2.0</maven.jib.version>
     </properties>
     <dependencies>
