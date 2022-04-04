@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  DOCKERHUB_REPOSITORY: docker.io/chaosmaker/demo
+  REGISTRY_URL: docker.io/chaosmaker/demo
 
 jobs:
   ci-pipeline:
@@ -28,14 +28,6 @@ jobs:
         run: |
           echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
-      - name: Set Artifact ID env variable
-        run: |
-          echo "ARTIFACT_ID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)" >> $GITHUB_ENV
-
-      - name: Print Artifact ID
-        run: |
-          echo "ARTIFACT_ID= ${{env.ARTIFACT_ID}}"
-
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
@@ -53,7 +45,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
-      
+
       - name: Quality Gate check (Sonar)
         uses: sonarsource/sonarqube-quality-gate-action@master
         with:
@@ -62,17 +54,23 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      - name: 📦 Build Docker Images
+      - name: 📦 Build And Push Docker Images
         run: mvn package jib:build -am -DskipTests
         env:
           REGISTRY_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+
+
+  trivy:
+    runs-on: ubuntu-latest
+    needs: [ ci-pipeline ]
+    steps:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         continue-on-error: true
         with:
-          image-ref: '${{ env.DOCKERHUB_REPOSITORY }}:${{ env.RELEASE_VERSION }}'
+          image-ref: '${{ env.REGISTRY_URL }}:${{ env.RELEASE_VERSION }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
@@ -80,3 +78,4 @@ jobs:
         env:
           TRIVY_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           TRIVY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
